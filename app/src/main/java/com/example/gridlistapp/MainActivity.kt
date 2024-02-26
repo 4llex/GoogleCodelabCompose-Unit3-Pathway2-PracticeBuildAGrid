@@ -4,12 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.gridlistapp.data.DataSource
 import com.example.gridlistapp.model.CourseItemModel
 import com.example.gridlistapp.ui.theme.GridListAppTheme
 
@@ -36,7 +42,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CourseGridApp("Android")
+                    CourseGridApp(modifier = Modifier.padding(8.dp))
                 }
             }
         }
@@ -44,23 +50,22 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun CourseGridApp(name: String, modifier: Modifier = Modifier) {
-
-    //TODO: CourseGridList()
-    CourseCard(CourseItemModel(R.drawable.photography, R.string.photography, 100))
+fun CourseGridApp(modifier: Modifier = Modifier) {
+    CourseGridList(DataSource().loadCourses(), modifier = modifier)
 }
 
 
 @Composable
 fun CourseCard(courseItemModel: CourseItemModel, modifier: Modifier = Modifier) {
-    Card(modifier = modifier) {
+    Card() {
         Row {
             Image(
                 painter = painterResource(id = courseItemModel.imageResourceId),
                 contentDescription = stringResource(id = courseItemModel.nameResourceId),
-                modifier = Modifier
+                modifier = modifier
                     .height(68.dp)
-                    .width(68.dp),
+                    .width(68.dp)
+                    .aspectRatio(1f),
                 contentScale = ContentScale.Crop
             )
             Column(
@@ -93,8 +98,17 @@ fun CourseCard(courseItemModel: CourseItemModel, modifier: Modifier = Modifier) 
 
 
 @Composable
-fun CourseGridList() {
-
+fun CourseGridList(loadCourses: List<CourseItemModel>, modifier: Modifier = Modifier) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+    ) {
+        items(loadCourses) { course ->
+            CourseCard(course)
+        }
+    }
 }
 
 @Preview(

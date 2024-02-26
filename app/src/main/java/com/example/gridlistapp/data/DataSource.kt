@@ -4,8 +4,8 @@ import com.example.gridlistapp.R
 import com.example.gridlistapp.model.CourseItemModel
 
 class DataSource() {
-    fun loadCourses() : List<CourseItemModel> {
-        return listOf(
+    fun loadCourses(): List<CourseItemModel> {
+        return listOf<CourseItemModel>(
             CourseItemModel(R.drawable.architecture, R.string.architecture, 58),
             CourseItemModel(R.drawable.crafts, R.string.crafts, 121),
             CourseItemModel(R.drawable.business, R.string.business, 78),
